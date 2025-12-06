@@ -274,12 +274,7 @@ async function selectMenuChangeEventHandler(event) {
 
   target.disabled = true;
 
-  const rawValue = target.value;
-  const userId =
-    rawValue === undefined || rawValue === null || rawValue === ""
-      ? 1
-      : Number(rawValue);
-
+  const userId = Number(target.value ?? 1);
   const posts = await getUserPosts(userId);
   const refreshPostsArray = await refreshPosts(posts);
 
