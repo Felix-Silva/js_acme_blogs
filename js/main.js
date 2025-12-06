@@ -64,11 +64,15 @@ function addButtonListeners() {
 
   buttons.forEach((button) => {
     const postId = button.dataset.postId;
-    if (postId) {
-      button.addEventListener("click", (event) =>
-        toggleComments(event, postId)
-      );
+
+    if (!postId) {
+      const cleanButton = button.cloneNode(true);
+      button.replaceWith(cleanButton);
+      return;
     }
+
+    const handler = (event) => toggleComments(event, postId);
+    button.addEventListener("click", handler);
   });
 
   return buttons;
@@ -270,7 +274,7 @@ async function selectMenuChangeEventHandler(event) {
 
   target.disabled = true;
 
-  const userId = Number(target.value) || 1;
+  const userId = Number(target.value ?? 1);
   const posts = await getUserPosts(userId);
   const refreshPostsArray = await refreshPosts(posts);
 
